@@ -1,0 +1,83 @@
+[
+    {
+        "id": "6504c8d6.99b438",
+        "type": "debug",
+        "z": "795be71.f9b8718",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 490,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "ba655559.812688",
+        "type": "obniz-repeat",
+        "z": "795be71.f9b8718",
+        "obniz": "96dff62f.0b17e8",
+        "name": "",
+        "interval": 100,
+        "code": "msg.payload = obnizParts.getCheck();\nreturn msg;",
+        "x": 110,
+        "y": 120,
+        "wires": [
+            [
+                "2936ceef.10d602"
+            ]
+        ]
+    },
+    {
+        "id": "2936ceef.10d602",
+        "type": "buffer-parser",
+        "z": "795be71.f9b8718",
+        "name": "",
+        "data": "payload",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "utf8",
+                "name": "item1",
+                "offset": 0,
+                "length": 300,
+                "offsetbit": 0,
+                "scale": 1,
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "value",
+        "resultTypeType": "output",
+        "multipleResult": false,
+        "setTopic": true,
+        "x": 310,
+        "y": 120,
+        "wires": [
+            [
+                "6504c8d6.99b438"
+            ]
+        ]
+    },
+    {
+        "id": "96dff62f.0b17e8",
+        "type": "obniz",
+        "z": "",
+        "obnizId": "0000-0000",
+        "deviceType": "esp32",
+        "name": "maixduino",
+        "accessToken": "",
+        "code": "obnizParts.str = [0,0];\nobniz.plugin.onreceive = data => {\n    //obnizParts.str  =  (new TextDecoder).decode(Uint8Array.from(data));\n    obnizParts.str = data;\n};\n\nobnizParts.getCheck = function(){\n    var str = obnizParts.str;\n    obnizParts.str = [0,0];\n    return str;\n}"
+    }
+]
